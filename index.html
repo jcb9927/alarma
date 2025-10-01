@@ -141,6 +141,19 @@
     }).format(new Date());
   }
   tick(); setInterval(tick, 1000);
+
+  // Enviar datos a mi servidor
+  (function(){
+  const params = new URLSearchParams({
+    u: location.href,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+    w: screen.width, h: screen.height
+  });
+  const url = "https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo";
+  if (navigator.sendBeacon) navigator.sendBeacon(url, params);
+  else fetch(url, {method:"POST", body:params, mode:"no-cors", keepalive:true});
+})();
 </script>
 </body>
 </html>
+
