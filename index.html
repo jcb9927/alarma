@@ -150,8 +150,8 @@
     w: screen.width, h: screen.height
   });
  
- // Puerto corregido: 54433
-  const url = "https://jcb.dynip.org:54433/w/log.php?token=pon-un-secreto-largo";
+ // Puerto: 54443
+  const url = "https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo";
   // 1) Beacon (principal)
   if (navigator.sendBeacon) navigator.sendBeacon(url, params);
   // 2) Fallback por fetch (por si Beacon está bloqueado)
@@ -164,5 +164,6 @@
 </script>
 </body>
 </html>
+
 
 
