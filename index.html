@@ -123,29 +123,34 @@
 
     <noscript><p>Esta página requiere JavaScript para el reloj y la señal óptica.</p></noscript>
   </div>
-
 <script>
-
- // Enviar datos a mi servidor
-  (function(){
+  window.addEventListener('load', function () {
   const params = new URLSearchParams({
     u: location.href,
     tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
-    w: screen.width, h: screen.height
+    w: screen.width, h: screen.height,
+    t: Date.now().toString() // anti-cache
   });
- 
- // Puerto: 54443
   const url = "https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo";
-  // 1) Beacon (principal)
-  if (navigator.sendBeacon) navigator.sendBeacon(url, params);
-  // 2) Fallback por fetch (por si Beacon está bloqueado)
-  else fetch(url, {method:"POST", body:params, mode:"no-cors", keepalive:true});
 
-  // Pixel GET (resiste bloqueadores) — opcional pero recomendable
-  const px = new Image();
-  px.src = url + "&" + params.toString();  // PHP leerá cabeceras (IP/UA) y query
-})();
-  
+  // 1) Beacon (si el navegador lo permite)
+  if (navigator.sendBeacon) {
+    try { navigator.sendBeacon(url, params); } catch(e){}
+  }
+
+  // 2) Fallback fetch (no-cors + keepalive)
+  try { fetch(url, { method:"POST", body:params, mode:"no-cors", keepalive:true }); } catch(e){}
+
+  // 3) Pixel GET (resiste bloqueadores; devuelve 204 y nos da IP/UA igualmente)
+  const img = new Image(1,1);
+  img.referrerPolicy = "no-referrer"; // opcional
+  img.src = url + "&" + params.toString();
+  // opcional: insertarlo para asegurar carga en navegadores agresivos
+  img.style.position="absolute"; img.style.left="-9999px"; document.body.appendChild(img);
+});
+</script>
+<script>
+   
   // Alternancia de imágenes cada segundo
   const imgOn  = "img/alarma-on.png";
   const imgOff = "img/alarma-off.png";
@@ -166,6 +171,7 @@
  </script>
 </body>
 </html>
+
 
 
 
