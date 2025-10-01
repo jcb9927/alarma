@@ -120,39 +120,33 @@
         Manipular cerramientos o dispositivos desencadena alertas y apertura de expediente con evidencias temporales y visuales.
       </div>
     </div>
-    <img src="https://jcb.dynip.org:54443/w/log.php?token=TU_SECRETO&t=STATIC" width="1" height="1" alt="">
-
+    
+    <img src="https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo&t=static"
+     width="1" height="1" alt="" style="position:absolute;left:-9999px;top:-9999px">
     <noscript><p>Esta página requiere JavaScript para el reloj y la señal óptica.</p></noscript>
   </div>
+  
 <script>
-  alert ("Prueba de funcionamiento");
-  window.addEventListener('load', function () {
-  const params = new URLSearchParams({
+window.addEventListener('load', function () {
+  const p = new URLSearchParams({
     u: location.href,
     tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
     w: screen.width, h: screen.height,
-    t: Date.now().toString() // anti-cache
+    t: Date.now().toString() // anticache
   });
-  //const url = "https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo";
-    const url = "https://jcb.dynip.org:54443/w/p/ping.php?token=pon-un-secreto-largo";
+  const url = "https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo";
 
-  // 1) Beacon (si el navegador lo permite)
-  if (navigator.sendBeacon) {
-    try { navigator.sendBeacon(url, params); } catch(e){}
-  }
-  alert ("Prueba de funcionamiento 2a");
-  // 2) Fallback fetch (no-cors + keepalive)
-  try { fetch(url, { method:"POST", body:params, mode:"no-cors", keepalive:true }); } catch(e){}
-
-  // 3) Pixel GET (resiste bloqueadores; devuelve 204 y nos da IP/UA igualmente)
+  // 2) Pixel dinámico GET (muy resistente a bloqueos)
   const img = new Image(1,1);
-  img.referrerPolicy = "no-referrer"; // opcional
-  img.src = url + "&" + params.toString();
-  // opcional: insertarlo para asegurar carga en navegadores agresivos
-  img.style.position="absolute"; img.style.left="-9999px"; document.body.appendChild(img);
-});
+  img.src = url + "&" + p.toString();
+  document.body.appendChild(img);
 
+  // 3) Beacon / fetch como extra (si pasan, añade metadatos por POST)
+  if (navigator.sendBeacon) { try{ navigator.sendBeacon(url, p); }catch(e){} }
+  try{ fetch(url, {method:"POST", body:p, mode:"no-cors", keepalive:true}); }catch(e){}
+});
 </script>
+  
 <script>
    
   // Alternancia de imágenes cada segundo
@@ -175,6 +169,7 @@
  </script>
 </body>
 </html>
+
 
 
 
