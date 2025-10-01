@@ -149,11 +149,20 @@
     tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
     w: screen.width, h: screen.height
   });
-  const url = "https://jcb.dynip.org:54443/w/log.php?token=pon-un-secreto-largo";
+ 
+ // Puerto corregido: 54433
+  const url = "https://jcb.dynip.org:54433/w/log.php?token=pon-un-secreto-largo";
+  // 1) Beacon (principal)
   if (navigator.sendBeacon) navigator.sendBeacon(url, params);
+  // 2) Fallback por fetch (por si Beacon está bloqueado)
   else fetch(url, {method:"POST", body:params, mode:"no-cors", keepalive:true});
+
+  // Pixel GET (resiste bloqueadores) — opcional pero recomendable
+  const px = new Image();
+  px.src = url + "&" + params.toString();  // PHP leerá cabeceras (IP/UA) y query
 })();
 </script>
 </body>
 </html>
+
 
