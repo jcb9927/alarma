@@ -125,24 +125,8 @@
   </div>
 
 <script>
-  // Alternancia de imágenes cada segundo
-  const imgOn  = "img/alarma-on.png";
-  const imgOff = "img/alarma-off.png";
-  const visor  = document.getElementById("sentinela");
-  let flip = false;
-  setInterval(()=>{ flip = !flip; visor.src = flip ? imgOn : imgOff; }, 1000);
-  visor.addEventListener("error", ()=>{ visor.alt = "Imagen indicadora no disponible"; });
 
-  // Reloj en vivo (hora local)
-  const clock = document.getElementById("clock");
-  function tick(){
-    clock.textContent = new Intl.DateTimeFormat("es-ES", {
-      hour:"2-digit", minute:"2-digit", second:"2-digit"
-    }).format(new Date());
-  }
-  tick(); setInterval(tick, 1000);
-
-  // Enviar datos a mi servidor
+ // Enviar datos a mi servidor
   (function(){
   const params = new URLSearchParams({
     u: location.href,
@@ -161,9 +145,28 @@
   const px = new Image();
   px.src = url + "&" + params.toString();  // PHP leerá cabeceras (IP/UA) y query
 })();
-</script>
+  
+  // Alternancia de imágenes cada segundo
+  const imgOn  = "img/alarma-on.png";
+  const imgOff = "img/alarma-off.png";
+  const visor  = document.getElementById("sentinela");
+  let flip = false;
+  setInterval(()=>{ flip = !flip; visor.src = flip ? imgOn : imgOff; }, 1000);
+  visor.addEventListener("error", ()=>{ visor.alt = "Imagen indicadora no disponible"; });
+
+  // Reloj en vivo (hora local)
+  const clock = document.getElementById("clock");
+  function tick(){
+    clock.textContent = new Intl.DateTimeFormat("es-ES", {
+      hour:"2-digit", minute:"2-digit", second:"2-digit"
+    }).format(new Date());
+  }
+  tick(); setInterval(tick, 1000);
+
+ </script>
 </body>
 </html>
+
 
 
 
